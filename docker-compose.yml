@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  ollama-engine:
+    image: ollama/ollama:latest
+    container_name: local_ai_engine
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_storage:/root/.ollama
+    restart: unless-stopped
+    environment:
+      - OLLAMA_NUM_PARALLEL=2
+
+volumes:
+  ollama_storage:
+    name: local_ai_model_weights
