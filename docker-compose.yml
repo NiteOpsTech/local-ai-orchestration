@@ -1,16 +1,20 @@
-version: '3.8'
-
 services:
   ollama-engine:
     image: ollama/ollama:latest
     container_name: local_ai_engine
     ports:
-      - "11434:11434"
+      - "127.0.0.1:11434:11434"
     volumes:
       - ollama_storage:/root/.ollama
     restart: unless-stopped
     environment:
-      - OLLAMA_NUM_PARALLEL=2
+      OLLAMA_HOST: "0.0.0.0:11434"
+      OLLAMA_NUM_PARALLEL: "2"
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 volumes:
   ollama_storage:
